@@ -1,0 +1,28 @@
+name: "Daily Auto Commit by 23f2004695@ds.study.iitm.ac.in"
+
+on:
+  schedule:
+    - cron: '30 2 * * *'  # 2:30 AM UTC daily
+  workflow_dispatch:        # Test button
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+    - name: "Checkout by 23f2004695@ds.study.iitm.ac.in"
+      uses: actions/checkout@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: "Create daily update"
+      run: |
+        echo "$(date -u)" >> daily-log.txt
+      
+    - name: "Commit & push"
+      run: |
+        git config user.name "DevSync Bot"
+        git config user.email "23f2004695@ds.study.iitm.ac.in"
+        git add daily-log.txt
+        git commit -m "🤖 Daily update: $(date -u)" || exit 0
+        git push
+
